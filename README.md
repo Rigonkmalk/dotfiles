@@ -1,1 +1,3 @@
-# .i3-config
+# dotfiles
+
+Hi ! This my repository for my personal dotfiles confiuration :)
