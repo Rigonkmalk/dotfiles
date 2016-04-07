@@ -7,6 +7,8 @@ i3 windows manager :
 * i3lock
 * lightdm
 
+Debian user
+
 	sudo apt-get install lightdm i3 i3blocks i3lock
 
 font and icons :
