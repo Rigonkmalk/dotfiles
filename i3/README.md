@@ -31,3 +31,34 @@ font and icons :
 	cp * ~/.i3/
 
 restart i3, done !
+
+### Temperature
+
+For the temp :
+
+Debian user
+
+	sudo apt-get install lm_sensors
+
+restart i3 and you have the computer's temperature :)
+
+### Weather
+
+Debian user
+
+	chmod u+x IconicWeather.sh
+
+Use like this
+
+	sh IconicWeather.sh <locationcode>
+
+(The temp are in Farenheit, you can change it.)
+
+
+### Gmail Script
+
+mail.sh is script for Gmail only (sorry)
+
+Debian user
+
+	sudo apt-get install shc
