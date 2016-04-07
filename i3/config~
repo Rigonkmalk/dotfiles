@@ -30,7 +30,7 @@ font pango:Source Sans pro-10 10
 new_window pixel 4
 new_float pixel 4
 
-exec --no-startup-id feh --bg-scale ~/wallpaper/simpledesktops.png
+exec --no-startup-id feh --bg-scale /path/to/image.file
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
