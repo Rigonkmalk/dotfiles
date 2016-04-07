@@ -25,8 +25,7 @@ font and icons :
 
 ### Installation
 
-	git clone https://github.com/Rigonkmalk/dotfiles.git && cd dotfiles
-	cd i3/
+	git clone https://github.com/Rigonkmalk/dotfiles.git && cd dotfiles/i3
 	cp * ~/.i3/
 
 restart i3, done !
