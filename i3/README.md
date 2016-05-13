@@ -46,7 +46,7 @@ restart i3 and you have the computer's temperature :)
 
 Debian user
 
-	chmod u+x IconicWeather.sh
+	chmod u+x ~/.i3/IconicWeather.sh
 
 Use like this
 

@@ -19,7 +19,8 @@ set $green       #b8bb26
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:Source Sans pro-10 10
+	font pango:Noto Sans 8
+
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
@@ -27,10 +28,28 @@ font pango:Source Sans pro-10 10
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
 
-new_window pixel 4
-new_float pixel 4
 
-exec --no-startup-id feh --bg-scale ~/wallpaper/simpledesktops.png
+##############################################################################
+#	Custom Configuration
+#
+#	By Rigonkmalk
+#	05-12-16 5:07
+##############################################################################
+
+new_window pixel 1
+new_float normal
+
+###
+#Background
+###
+exec --no-startup-id feh --bg-scale ~/wallpaper/ZJ7NM.png
+
+bindsym XF86MonBrightnessUp exec xbacklight + 10
+bindsym XF86MonBrightnessDown exec xbacklight - 10
+bindsym XF86AudioRaiseVolume exec "amixer -q set Master 10%+ unmute"
+bindsym XF86AudioLowerVolume exec "amixer -q set Master 10%- unmute"
+bindsym XF86AudioMute exec "amixer -q set Master toggle"
+bindsym $mod+c exec i3lock -c 000000
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -41,21 +60,25 @@ bindsym $mod+Return exec i3-sensible-terminal
 # kill focused window
 bindsym $mod+Shift+a kill
 
+###
+#Rofi
+###
+
+bindsym $mod+d exec rofi -show run
+
+###
 # start dmenu (a program launcher)
+###
 
 #bindsym $mod+d exec dmenu_run -p Rigz$ -nb '#000000' -nf '#17181A' -sb '#6c71c4' -sf '#000000'
 #bindsym $mod+d exec dmenu_run -b  -fn 'xft:FontAwesome:pixelsize=10' -nb '#191919' -nf '#9ac0cd' -sb '#191919' -sf '#bf3f34' -p 'MENU'
 #bindsym $mod+d exec dmenu_run -i -y 30 -o 0.8 -l 100 -w 500 -p "\$" -nb "$background" -nf "$white" -sb "$background" -sf "$green" -fn "Hack-12:normal"
-bindsym $mod+d exec dmenu_run -b -p "\$" -nb '$background' -nf "$white" -sb "$background" -sf "$green" -fn "Hack-12:normal"
+#bindsym $mod+d exec dmenu_run -b -p "\$" -nb '$background' -nf "$white" -sb "$background" -sf "$green" -fn "Hack-12:normal"
+
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-
-#custom layout
-bindsym $mod+c exec i3lock -c 000000
-bindsym Mod1+Up exec --no-startup-id amixer -q set 'Master' 5%+
-bindsym Mod1+Down exec --no-startup-id amixer -q set 'Master' 5%-
 
 # change focus
 bindsym $mod+j focus left
@@ -108,27 +131,27 @@ bindsym $mod+q focus parent
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace 1   
+bindsym $mod+1 workspace 1  
 bindsym $mod+2 workspace 2  
 bindsym $mod+3 workspace 3  
 bindsym $mod+4 workspace 4  
 bindsym $mod+5 workspace 5  _
 bindsym $mod+6 workspace 6  
-bindsym $mod+7 workspace 7   
-bindsym $mod+8 workspace 8   
+bindsym $mod+7 workspace 7  
+bindsym $mod+8 workspace 8  
 bindsym $mod+9 workspace 9  
 bindsym $mod+0 workspace 10 
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1  ·
+bindsym $mod+Shift+1 move container to workspace 1  
 bindsym $mod+Shift+2 move container to workspace 2  
 bindsym $mod+Shift+3 move container to workspace 3  
 bindsym $mod+Shift+4 move container to workspace 4  
 bindsym $mod+Shift+5 move container to workspace 5  _
 bindsym $mod+Shift+6 move container to workspace 6  
-bindsym $mod+Shift+7 move container to workspace 7 ·
+bindsym $mod+Shift+7 move container to workspace 7  
 bindsym $mod+Shift+8 move container to workspace 8  
-bindsym $mod+Shift+9 move container to workspace 9 
+bindsym $mod+Shift+9 move container to workspace 9  
 bindsym $mod+Shift+0 move container to workspace 10 
 
 # reload the configuration file
@@ -164,20 +187,19 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspacebar (plus the system information i3status
-# finds out, if available)
 bar {
-		font pango:Source Sans Pro-10 10
+#		font pango:Source Sans Pro-10 10
+		font pango:fixed-10 8
         status_command i3blocks -c ~/.i3/i3blocks.conf
 		position top
-	colors {
-		separator #268bd2
-		background #17181A
-		statusline #839496
-		focused_workspace #fdf6e3 #6c71c4 #fdf6e3
-		active_workspace #fdf6e3 #6c71c4 #fdf6e3
-		inactive_workspace #002b36 #586e75 #002b36
-		urgent_workspace #d33682 #d33682 #fdf6e3
+		colors {
+			separator #bcb8ba
+			background #30272b
+			statusline #839496
+			focused_workspace #fdf6e3 #694e63 #bcb8ba
+			active_workspace #fdf6e3 #6c71c4 #fdf6e3
+			inactive_workspace #002b36 #586e75 #002b36
+			urgent_workspace #d33682 #d33682 #fdf6e3
 	}
 }
 client.focused #6c71c4 #6c71c4 #fdf6e3 #6c71c4
