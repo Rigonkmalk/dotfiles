@@ -6,6 +6,8 @@
    ## Specification
    [Hack Nerd fonts](https://www.nerdfonts.com/font-downloads)
 
+</div>
+
    ## Plugin used
    ```
    autopairs
@@ -45,4 +47,3 @@
    vim-maximizer
    whitespaces
    ```
-</div>
