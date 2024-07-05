@@ -1,4 +1,5 @@
 <div align="center">
+
    # Rigonkmalk's Dotfiles
    My first dotfiles for personnal use
 
@@ -6,7 +7,6 @@
 
    ## Specification
    [Hack Nerd fonts](https://www.nerdfonts.com/font-downloads)
-   ---
 
    ## Plugin used
 
