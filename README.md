@@ -13,9 +13,7 @@
    autopairs
    cmp
    colorscheme
-   dadbod
    dap
-   database.cnf
    debug
    dressing
    gitsigns
