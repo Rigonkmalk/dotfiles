@@ -1,10 +1,15 @@
 <div align="center">
 
-   # Rigonkmalk's Dotfiles
-   My first dotfiles for personnal use only
+    # Rigonkmalk's Dotfiles
+    My first dotfiles for personnal use only
 
-   ## Specification
-   [Hack Nerd fonts](https://www.nerdfonts.com/font-downloads)
+    ## Specification
+    [Hack Nerd fonts](https://www.nerdfonts.com/font-downloads)
+
+    ## How to install
+    ```shell
+    git clone https://github.com/Rigonkmalk/dotfiles.git ~/.config/
+    ```
 
 </div>
 
