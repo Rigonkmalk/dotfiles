@@ -18,7 +18,7 @@ end
 
 local languages = {
     'lua_ls',
-    'tsserver',
+    'ts_ls',
     'cssls',
     'jsonls',
     'bashls',
