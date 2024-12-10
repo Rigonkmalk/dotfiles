@@ -3,7 +3,8 @@
 setup_dotfiles () {
 	local dst="$HOME/.config/"
 
-	mv nvim/ $dst
+	cp nvim/ $dst
+	cp tmux/ $dst
 }
 
 setup_dotfiles
