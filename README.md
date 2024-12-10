@@ -6,12 +6,6 @@ My first dotfiles for personnal use only
 
 [Hack Nerd fonts](https://www.nerdfonts.com/font-downloads)
 
-## How to install
-
-```shell
-git clone https://github.com/Rigonkmalk/dotfiles.git ~/.config/
-```
-
 ## Plugin used
 
 ```txt
