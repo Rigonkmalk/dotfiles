@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
-setup_dotfiles () {
-	local dst="$HOME/.config/"
+dst="$HOME/.config/"
 
+if [ -z "$1" ]; then
+    echo "No function name provided."
+    exit 1
+fi
+
+setup_dotfiles () {
 	cp nvim/ $dst
 	cp tmux/ $dst
 }
 
-setup_dotfiles
+fetch_homedir () {
+    cp -R $dst/nvim/ .
+}
+
+$1
