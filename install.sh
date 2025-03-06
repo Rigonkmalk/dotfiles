@@ -14,8 +14,8 @@ show_help() {
 
 # Function to set up dotfiles
 setup_dotfiles() {
-    cp -r nvim/ "$dst"
-    cp -r tmux/ "$dst"
+    cp -R nvim/ "$dst"
+    cp -R tmux/ "$dst"
     echo "Dotfiles setup complete."
 }
 
