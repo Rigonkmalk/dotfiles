@@ -12,6 +12,8 @@ My first dotfiles for personnal use only
 - fzf
 - ripgrep
 - npm
+- zig
+- lazygit
 ```
 
 ## Plugin used
