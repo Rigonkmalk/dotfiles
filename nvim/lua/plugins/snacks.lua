@@ -1,5 +1,5 @@
 return {
-  "folke/snacks.nvim",
+      "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
   ---@type snacks.Config
@@ -16,6 +16,9 @@ return {
     quickfile = { enabled = true },
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
+    explorer = {
+            replace_netrw = true
+    },
     words = { enabled = true },
     styles = {
       notification = {
