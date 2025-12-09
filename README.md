@@ -1,20 +1,10 @@
 # Rigonkmalk's Dotfiles
 
-My first dotfiles for personnal use only
+My dotfiles for personnal Linux use only
 
 ## Specification
 
 [Hack Nerd fonts](https://www.nerdfonts.com/font-downloads)
-
-### Packages
-
-```md
-- fzf
-- ripgrep
-- npm
-- zig
-- lazygit
-```
 
 ## Installation
 
@@ -24,7 +14,6 @@ Before installing, ensure you have the following packages installed on your syst
 - fzf
 - ripgrep
 - npm
-- zig
 - lazygit
 
 ### Quick Install

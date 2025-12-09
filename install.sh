@@ -57,10 +57,32 @@ backup_config() {
     fi
 }
 
+# Check if dependencies are installed
+if ! command -v fzf &> /dev/null; then
+    echo "fzf is not installed. Please install it."
+    exit 1
+fi
+
+if ! command -v rg &> /dev/null; then
+    echo "ripgrep is not installed. Please install it."
+    exit 1
+fi
+
+if ! command -v npm &> /dev/null; then
+    echo "npm is not installed. Please install it."
+    exit 1
+fi
+
+if ! command -v lazygit &> /dev/null; then
+    echo "lazygit is not installed. Please install it."
+    exit 1
+fi
+
 # Function to display help information
 show_help() {
     echo "Usage: $0 [function_name]"
     echo "Available functions:"
+    echo "  --install_dependencies  - Install dependencies."
     echo "  --setup_dotfiles    - Set up dotfiles for nvim and tmux."
     echo "  --fetch_homedir     - Fetch nvim configuration from home directory."
     echo "  --windows_mirror    - Mirror nvim configuration to Windows directory."
@@ -98,6 +120,19 @@ setup_dotfiles() {
     log "Dotfiles setup completed successfully"
 }
 
+# Function to install dependencies by distributions (rhel + ubuntu)
+install_dependencies() {
+    if command -v apt &> /dev/null; then
+        sudo apt update
+        sudo apt install -y fzf ripgrep npm lazygit
+    elif command -v dnf &> /dev/null; then
+        sudo dnf update
+        sudo dnf install -y fzf ripgrep npm lazygit
+    else
+        echo "Unsupported package manager."
+        exit 1
+    fi
+}
 # Function to fetch home directory configuration
 fetch_homedir() {
     log "Starting fetch from home directory"
@@ -157,7 +192,11 @@ fi
 
 # Handle function calls
 case $1 in
+    --install_dependencies)
+        install_dependencies
+        ;;
     --setup_dotfiles)
+        install_dependencies
         setup_dotfiles
         ;;
     --fetch_homedir)
