@@ -1,5 +1,6 @@
 -- install lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
 if not vim.loop.fs_stat(lazypath) then
    vim.fn.system({
       "git",
@@ -15,6 +16,10 @@ vim.opt.rtp:prepend(lazypath)
 
 -- load plugins
 require("lazy").setup("plugins", {
+    {
+        import = "plugins",
+    },
+
 	change_detection = {
 		notify = false,
 	},

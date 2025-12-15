@@ -141,14 +141,24 @@ fetch_homedir() {
     if [ ! -d "$CONFIG_DIR/nvim" ]; then
         error_exit "nvim configuration not found in $CONFIG_DIR"
     fi
+
+    if [ ! -d "$CONFIG_DIR/lazygit" ];then
+        error_exit "lazygit configuration not found in $CONFIG_DIR"
+    fi
     
     # Backup existing local configuration
     backup_config "nvim" "local_nvim_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "lazygit" "local_lazygit_backup_$(date +%Y%m%d_%H%M%S)"
     
     # Copy configuration
     echo "Fetching nvim configuration from home directory..."
     cp -R "$CONFIG_DIR/nvim/" . || error_exit "Failed to fetch nvim configuration"
     
+
+    # Copy configuration
+    echo "Fetching lazygit configuration from home directory..."
+    cp -R "$CONFIG_DIR/lazygit/" . || error_exit "Failed to fetch lazygit configuration"
+
     success_msg "Home directory configuration fetched."
     log "Fetch from home directory completed successfully"
 }
