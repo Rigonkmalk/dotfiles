@@ -116,6 +116,9 @@ setup_dotfiles() {
     echo "Copying tmux configuration..."
     cp -R tmux/ "$CONFIG_DIR/" || error_exit "Failed to copy tmux configuration"
     
+    echo "Copying lazygit configuration..."
+    cp -R lazygit/ "$CONFIG_DIR/" || error_exit "Failed to copy lazygit configuration"
+
     success_msg "Dotfiles setup complete."
     log "Dotfiles setup completed successfully"
 }
@@ -206,7 +209,6 @@ case $1 in
         install_dependencies
         ;;
     --setup_dotfiles)
-        install_dependencies
         setup_dotfiles
         ;;
     --fetch_homedir)
