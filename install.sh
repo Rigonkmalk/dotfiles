@@ -148,15 +148,34 @@ fetch_homedir() {
     if [ ! -d "$CONFIG_DIR/lazygit" ];then
         error_exit "lazygit configuration not found in $CONFIG_DIR"
     fi
+
+    if [ ! -d "$CONFIG_DIR/i3" ];then
+        error_exit "i3 configuration not found in $CONFIG_DIR"
+    fi
     
+    if [ ! -d "$CONFIG_DIR/polybar" ];then
+        error_exit "polybar configuration not found in $CONFIG_DIR"
+    fi
+
     # Backup existing local configuration
     backup_config "nvim" "local_nvim_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "lazygit" "local_lazygit_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "i3" "local_i3_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "polybar" "local_polybar_backup_$(date +%Y%m%d_%H%M%S)"
+    
     
     # Copy configuration
     echo "Fetching nvim configuration from home directory..."
     cp -R "$CONFIG_DIR/nvim/" . || error_exit "Failed to fetch nvim configuration"
     
+
+    # Copy configuration
+    echo "Fetching polybar configuration from home directory..."
+    cp -R "$CONFIG_DIR/polybar/" . || error_exit "Failed to fetch polybar configuration"
+
+    # Copy configuration
+    echo "Fetching i3 configuration from home directory..."
+    cp -R "$CONFIG_DIR/i3/" . || error_exit "Failed to fetch i3 configuration"
 
     # Copy configuration
     echo "Fetching lazygit configuration from home directory..."
