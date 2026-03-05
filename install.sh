@@ -43,7 +43,7 @@ warning_msg() {
 backup_config() {
     local source_dir="$1"
     local backup_name="$2"
-    
+
     if [ -d "$source_dir" ]; then
         echo "Found existing configuration in $source_dir"
         read -p "Would you like to back it up to $BACKUP_DIR/$backup_name? [y/N] " -r
@@ -78,6 +78,11 @@ if ! command -v lazygit &> /dev/null; then
     exit 1
 fi
 
+if ! command -v mpv &> /dev/null; then
+    echo "mpv is not installed. Please install it."
+    exit 1
+fi
+
 # Function to display help information
 show_help() {
     echo "Usage: $0 [function_name]"
@@ -92,32 +97,35 @@ show_help() {
 # Function to set up dotfiles
 setup_dotfiles() {
     log "Starting dotfiles setup"
-    
+
     # Check if source directories exist
     if [ ! -d "nvim" ]; then
         error_exit "nvim directory not found in current location"
     fi
-    
+
     if [ ! -d "tmux" ]; then
         error_exit "tmux directory not found in current location"
     fi
-    
+
     # Backup existing configurations
     backup_config "$CONFIG_DIR/nvim" "nvim_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "$CONFIG_DIR/tmux" "tmux_backup_$(date +%Y%m%d_%H%M%S)"
-    
+
     # Create config directory if it doesn't exist
     mkdir -p "$CONFIG_DIR"
-    
+
     # Copy configurations
     echo "Copying nvim configuration..."
     cp -R nvim/ "$CONFIG_DIR/" || error_exit "Failed to copy nvim configuration"
-    
+
     echo "Copying tmux configuration..."
     cp -R tmux/ "$CONFIG_DIR/" || error_exit "Failed to copy tmux configuration"
-    
+
     echo "Copying lazygit configuration..."
     cp -R lazygit/ "$CONFIG_DIR/" || error_exit "Failed to copy lazygit configuration"
+
+    echo "Copying mpv configuration..."
+    cp -R mpv/ "$CONFIG_DIR/" || error_exit "Failed to copy mpv configuration"
 
     success_msg "Dotfiles setup complete."
     log "Dotfiles setup completed successfully"
@@ -127,10 +135,10 @@ setup_dotfiles() {
 install_dependencies() {
     if command -v apt &> /dev/null; then
         sudo apt update
-        sudo apt install -y fzf ripgrep npm lazygit
+        sudo apt install -y fzf ripgrep npm lazygit mpv
     elif command -v dnf &> /dev/null; then
         sudo dnf update
-        sudo dnf install -y fzf ripgrep npm lazygit
+        sudo dnf install -y fzf ripgrep npm lazygit mpv
     else
         echo "Unsupported package manager."
         exit 1
@@ -139,7 +147,7 @@ install_dependencies() {
 # Function to fetch home directory configuration
 fetch_homedir() {
     log "Starting fetch from home directory"
-    
+
     # Check if source directory exists
     if [ ! -d "$CONFIG_DIR/nvim" ]; then
         error_exit "nvim configuration not found in $CONFIG_DIR"
@@ -152,8 +160,12 @@ fetch_homedir() {
     if [ ! -d "$CONFIG_DIR/i3" ];then
         error_exit "i3 configuration not found in $CONFIG_DIR"
     fi
-    
+
     if [ ! -d "$CONFIG_DIR/polybar" ];then
+        error_exit "polybar configuration not found in $CONFIG_DIR"
+    fi
+
+    if [ ! -d "$CONFIG_DIR/mpv" ];then
         error_exit "polybar configuration not found in $CONFIG_DIR"
     fi
 
@@ -162,12 +174,13 @@ fetch_homedir() {
     backup_config "lazygit" "local_lazygit_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "i3" "local_i3_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "polybar" "local_polybar_backup_$(date +%Y%m%d_%H%M%S)"
-    
-    
+    backup_config "mpv" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
+
+
     # Copy configuration
     echo "Fetching nvim configuration from home directory..."
     cp -R "$CONFIG_DIR/nvim/" . || error_exit "Failed to fetch nvim configuration"
-    
+
 
     # Copy configuration
     echo "Fetching polybar configuration from home directory..."
@@ -181,6 +194,10 @@ fetch_homedir() {
     echo "Fetching lazygit configuration from home directory..."
     cp -R "$CONFIG_DIR/lazygit/" . || error_exit "Failed to fetch lazygit configuration"
 
+    # Copy configuration
+    echo "Fetching mpv configuration from home directory..."
+    cp -R "$CONFIG_DIR/mpv/" . || error_exit "Failed to fetch mpv configuration"
+
     success_msg "Home directory configuration fetched."
     log "Fetch from home directory completed successfully"
 }
@@ -188,25 +205,25 @@ fetch_homedir() {
 # Function to mirror configuration to Windows directory
 windows_mirror() {
     log "Starting Windows mirror operation"
-    
+
     # Check if Windows directory exists
     if [ ! -d "$WINDOWS_NVIM_DIR" ]; then
         warning_msg "Windows nvim directory not found, attempting to create it"
         mkdir -p "$WINDOWS_NVIM_DIR" || error_exit "Failed to create Windows nvim directory"
     fi
-    
+
     # Check if source directory exists
     if [ ! -d "$CONFIG_DIR/nvim" ]; then
         error_exit "nvim configuration not found in $CONFIG_DIR"
     fi
-    
+
     # Backup existing Windows configuration
     backup_config "$WINDOWS_NVIM_DIR" "windows_nvim_backup_$(date +%Y%m%d_%H%M%S)"
-    
+
     # Copy configuration
     echo "Mirroring configuration to Windows directory..."
     cp -R "$CONFIG_DIR/nvim/." "$WINDOWS_NVIM_DIR/" || error_exit "Failed to mirror configuration to Windows"
-    
+
     success_msg "Configuration mirrored to Windows directory."
     log "Windows mirror operation completed successfully"
 }

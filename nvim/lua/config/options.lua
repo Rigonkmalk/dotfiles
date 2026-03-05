@@ -1,7 +1,7 @@
 local option = vim.opt
 
 option.cmdheight = 0
-option.relativenumber = true           -- display relative line numbers
+option.relativenumber = false           -- display relative line numbers
 option.number = true                   -- display numbers
 option.tabstop = 4                     -- 1 tab = 4 spaces behaviour
 option.shiftwidth = 4                  -- Set amount of space characters, when we press '<' or '>'

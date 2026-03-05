@@ -15,6 +15,7 @@ Before installing, ensure you have the following packages installed on your syst
 - ripgrep
 - npm
 - lazygit
+- mpv
 
 ### Quick Install
 
