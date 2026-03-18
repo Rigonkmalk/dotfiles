@@ -88,6 +88,11 @@ if ! command -v kitty &> /dev/null; then
     exit 1
 fi
 
+if ! command -v fish &> /dev/null; then
+    echo "fish is not installed. Please install it."
+    exit 1
+fi
+
 # Function to display help information
 show_help() {
     echo "Usage: $0 [function_name]"
@@ -133,7 +138,10 @@ setup_dotfiles() {
     cp -R mpv/ "$CONFIG_DIR/" || error_exit "Failed to copy mpv configuration"
 
     echo "Copying kitty configuration..."
-    cp -R kitty/ "$CONFIG_DIR/" || error_exit "Failed to copy mpv configuration"
+    cp -R kitty/ "$CONFIG_DIR/" || error_exit "Failed to copy kitty configuration"
+
+    echo "Copying fish configuration..."
+    cp -R fish/ "$CONFIG_DIR/" || error_exit "Failed to copy fish configuration"
 
     success_msg "Dotfiles setup complete."
     log "Dotfiles setup completed successfully"
@@ -180,6 +188,11 @@ fetch_homedir() {
     if [ ! -d "$CONFIG_DIR/kitty" ];then
         error_exit "kitty configuration not found in $CONFIG_DIR"
     fi
+
+    if [ ! -d "$CONFIG_DIR/fish" ];then
+        error_exit "fish configuration not found in $CONFIG_DIR"
+    fi
+
     # Backup existing local configuration
     backup_config "nvim" "local_nvim_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "lazygit" "local_lazygit_backup_$(date +%Y%m%d_%H%M%S)"
@@ -187,12 +200,12 @@ fetch_homedir() {
     backup_config "polybar" "local_polybar_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "mpv" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "kitty" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "fish" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
 
 
     # Copy configuration
     echo "Fetching nvim configuration from home directory..."
     cp -R "$CONFIG_DIR/nvim/" . || error_exit "Failed to fetch nvim configuration"
-
 
     # Copy configuration
     echo "Fetching polybar configuration from home directory..."
@@ -212,7 +225,11 @@ fetch_homedir() {
 
     # Copy configuration
     echo "Fetching kitty configuration from home directory..."
-    cp -R "$CONFIG_DIR/kitty/" . || error_exit "Failed to fetch mpv configuration"
+    cp -R "$CONFIG_DIR/kitty/" . || error_exit "Failed to fetch kitty configuration"
+
+    # Copy configuration
+    echo "Fetching fish configuration from home directory..."
+    cp -R "$CONFIG_DIR/fish/" . || error_exit "Failed to fetch fish configuration"
 
     success_msg "Home directory configuration fetched."
     log "Fetch from home directory completed successfully"
