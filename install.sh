@@ -83,8 +83,8 @@ if ! command -v mpv &> /dev/null; then
     exit 1
 fi
 
-if ! command -v kitty &> /dev/null; then
-    echo "kitty is not installed. Please install it."
+if ! command -v alacritty &> /dev/null; then
+    echo "alacritty is not installed. Please install it."
     exit 1
 fi
 
@@ -98,7 +98,7 @@ show_help() {
     echo "Usage: $0 [function_name]"
     echo "Available functions:"
     echo "  --install_dependencies  - Install dependencies."
-    echo "  --setup_dotfiles    - Set up dotfiles for nvim and tmux."
+    echo "  --setup_dotfiles    - Set up dotfiles for nvim, lazygit, mpv, alacritty and fish."
     echo "  --fetch_homedir     - Fetch nvim configuration from home directory."
     echo "  --windows_mirror    - Mirror nvim configuration to Windows directory."
     echo "  --help              - Display this help message."
@@ -113,13 +113,12 @@ setup_dotfiles() {
         error_exit "nvim directory not found in current location"
     fi
 
-    if [ ! -d "tmux" ]; then
-        error_exit "tmux directory not found in current location"
-    fi
-
     # Backup existing configurations
     backup_config "$CONFIG_DIR/nvim" "nvim_backup_$(date +%Y%m%d_%H%M%S)"
-    backup_config "$CONFIG_DIR/tmux" "tmux_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "$CONFIG_DIR/lazygit" "lazygit_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "$CONFIG_DIR/mpv" "mpv_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "$CONFIG_DIR/alacritty" "alacritty_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "$CONFIG_DIR/fish" "fish_backup_$(date +%Y%m%d_%H%M%S)"
 
     # Create config directory if it doesn't exist
     mkdir -p "$CONFIG_DIR"
@@ -128,17 +127,14 @@ setup_dotfiles() {
     echo "Copying nvim configuration..."
     cp -R nvim/ "$CONFIG_DIR/" || error_exit "Failed to copy nvim configuration"
 
-    echo "Copying tmux configuration..."
-    cp -R tmux/ "$CONFIG_DIR/" || error_exit "Failed to copy tmux configuration"
-
     echo "Copying lazygit configuration..."
     cp -R lazygit/ "$CONFIG_DIR/" || error_exit "Failed to copy lazygit configuration"
 
     echo "Copying mpv configuration..."
     cp -R mpv/ "$CONFIG_DIR/" || error_exit "Failed to copy mpv configuration"
 
-    echo "Copying kitty configuration..."
-    cp -R kitty/ "$CONFIG_DIR/" || error_exit "Failed to copy kitty configuration"
+    echo "Copying alacritty configuration..."
+    cp -R alacritty/ "$CONFIG_DIR/" || error_exit "Failed to copy alacritty configuration"
 
     echo "Copying fish configuration..."
     cp -R fish/ "$CONFIG_DIR/" || error_exit "Failed to copy fish configuration"
@@ -173,20 +169,12 @@ fetch_homedir() {
         error_exit "lazygit configuration not found in $CONFIG_DIR"
     fi
 
-    if [ ! -d "$CONFIG_DIR/i3" ];then
-        error_exit "i3 configuration not found in $CONFIG_DIR"
-    fi
-
-    if [ ! -d "$CONFIG_DIR/polybar" ];then
-        error_exit "polybar configuration not found in $CONFIG_DIR"
-    fi
-
     if [ ! -d "$CONFIG_DIR/mpv" ];then
         error_exit "mpv configuration not found in $CONFIG_DIR"
     fi
 
-    if [ ! -d "$CONFIG_DIR/kitty" ];then
-        error_exit "kitty configuration not found in $CONFIG_DIR"
+    if [ ! -d "$CONFIG_DIR/alacritty" ];then
+        error_exit "alacritty configuration not found in $CONFIG_DIR"
     fi
 
     if [ ! -d "$CONFIG_DIR/fish" ];then
@@ -196,24 +184,14 @@ fetch_homedir() {
     # Backup existing local configuration
     backup_config "nvim" "local_nvim_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "lazygit" "local_lazygit_backup_$(date +%Y%m%d_%H%M%S)"
-    backup_config "i3" "local_i3_backup_$(date +%Y%m%d_%H%M%S)"
-    backup_config "polybar" "local_polybar_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "mpv" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
-    backup_config "kitty" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
-    backup_config "fish" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "alacritty" "local_alacritty_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "fish" "local_fish_backup_$(date +%Y%m%d_%H%M%S)"
 
 
     # Copy configuration
     echo "Fetching nvim configuration from home directory..."
     cp -R "$CONFIG_DIR/nvim/" . || error_exit "Failed to fetch nvim configuration"
-
-    # Copy configuration
-    echo "Fetching polybar configuration from home directory..."
-    cp -R "$CONFIG_DIR/polybar/" . || error_exit "Failed to fetch polybar configuration"
-
-    # Copy configuration
-    echo "Fetching i3 configuration from home directory..."
-    cp -R "$CONFIG_DIR/i3/" . || error_exit "Failed to fetch i3 configuration"
 
     # Copy configuration
     echo "Fetching lazygit configuration from home directory..."
@@ -224,8 +202,8 @@ fetch_homedir() {
     cp -R "$CONFIG_DIR/mpv/" . || error_exit "Failed to fetch mpv configuration"
 
     # Copy configuration
-    echo "Fetching kitty configuration from home directory..."
-    cp -R "$CONFIG_DIR/kitty/" . || error_exit "Failed to fetch kitty configuration"
+    echo "Fetching alacritty configuration from home directory..."
+    cp -R "$CONFIG_DIR/alacritty/" . || error_exit "Failed to fetch alacritty configuration"
 
     # Copy configuration
     echo "Fetching fish configuration from home directory..."
