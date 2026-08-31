@@ -1,0 +1,30 @@
+# Alacritty configuration (TOML format, required since 0.14)
+
+[env]
+TERM = "alacritty"
+
+[window]
+padding = { x = 6, y = 6 }
+dynamic_padding = true
+decorations = "Buttonless"
+opacity = 1.0
+dynamic_title = true
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[font]
+size = 14.0
+normal = { family = "FantasqueSansM Nerd Font Mono", style = "Regular" }
+bold = { family = "FantasqueSansM Nerd Font Mono", style = "Bold" }
+italic = { family = "FantasqueSansM Nerd Font Mono", style = "Italic" }
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+
+[selection]
+save_to_clipboard = true
+
+[general]
+live_config_reload = true
