@@ -11,6 +11,7 @@ Personal configuration files for macOS (primary) and Linux.
 | `alacritty/` | `~/.config/alacritty/` | Alacritty terminal (TOML format, requires Alacritty >= 0.14) |
 | `lazygit/` | `~/.config/lazygit/` | LazyGit theme and UI settings |
 | `mpv/` | `~/.config/mpv/` | mpv player options (yt-dlp integration) |
+| `zellij/` | `~/.config/zellij/` | Zellij terminal multiplexer configuration |
 | `install.sh` | — | Installation and synchronization script |
 
 ## Requirements
@@ -26,6 +27,7 @@ Checked by `install.sh` before any operation:
 - `mpv`
 - `alacritty`
 - `fish`
+- `zellij`
 
 ### Used by the fish functions
 
