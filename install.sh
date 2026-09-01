@@ -93,12 +93,17 @@ if ! command -v fish &> /dev/null; then
     exit 1
 fi
 
+if ! command -v zellij &> /dev/null; then
+    echo "zellij is not installed. Please install it."
+    exit 1
+fi
+
 # Function to display help information
 show_help() {
     echo "Usage: $0 [function_name]"
     echo "Available functions:"
     echo "  --install_dependencies  - Install dependencies."
-    echo "  --setup_dotfiles    - Set up dotfiles for nvim, lazygit, mpv, alacritty and fish."
+    echo "  --setup_dotfiles    - Set up dotfiles for nvim, lazygit, mpv, alacritty, fish and zellij."
     echo "  --fetch_homedir     - Fetch nvim configuration from home directory."
     echo "  --windows_mirror    - Mirror nvim configuration to Windows directory."
     echo "  --help              - Display this help message."
@@ -119,6 +124,7 @@ setup_dotfiles() {
     backup_config "$CONFIG_DIR/mpv" "mpv_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "$CONFIG_DIR/alacritty" "alacritty_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "$CONFIG_DIR/fish" "fish_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "$CONFIG_DIR/zellij" "zellij_backup_$(date +%Y%m%d_%H%M%S)"
 
     # Create config directory if it doesn't exist
     mkdir -p "$CONFIG_DIR"
@@ -139,6 +145,9 @@ setup_dotfiles() {
     echo "Copying fish configuration..."
     cp -R fish/ "$CONFIG_DIR/" || error_exit "Failed to copy fish configuration"
 
+    echo "Copying zellij configuration..."
+    cp -R zellij/ "$CONFIG_DIR/" || error_exit "Failed to copy zellij configuration"
+
     success_msg "Dotfiles setup complete."
     log "Dotfiles setup completed successfully"
 }
@@ -147,10 +156,10 @@ setup_dotfiles() {
 install_dependencies() {
     if command -v apt &> /dev/null; then
         sudo apt update
-        sudo apt install -y fzf ripgrep npm lazygit mpv
+        sudo apt install -y fzf ripgrep npm lazygit mpv zellij
     elif command -v dnf &> /dev/null; then
         sudo dnf update
-        sudo dnf install -y fzf ripgrep npm lazygit mpv
+        sudo dnf install -y fzf ripgrep npm lazygit mpv zellij
     else
         echo "Unsupported package manager."
         exit 1
@@ -181,12 +190,17 @@ fetch_homedir() {
         error_exit "fish configuration not found in $CONFIG_DIR"
     fi
 
+    if [ ! -d "$CONFIG_DIR/zellij" ];then
+        error_exit "zellij configuration not found in $CONFIG_DIR"
+    fi
+
     # Backup existing local configuration
     backup_config "nvim" "local_nvim_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "lazygit" "local_lazygit_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "mpv" "local_mpv_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "alacritty" "local_alacritty_backup_$(date +%Y%m%d_%H%M%S)"
     backup_config "fish" "local_fish_backup_$(date +%Y%m%d_%H%M%S)"
+    backup_config "zellij" "local_zellij_backup_$(date +%Y%m%d_%H%M%S)"
 
 
     # Copy configuration
@@ -208,6 +222,10 @@ fetch_homedir() {
     # Copy configuration
     echo "Fetching fish configuration from home directory..."
     cp -R "$CONFIG_DIR/fish/" . || error_exit "Failed to fetch fish configuration"
+
+    # Copy configuration
+    echo "Fetching zellij configuration from home directory..."
+    cp -R "$CONFIG_DIR/zellij/" . || error_exit "Failed to fetch zellij configuration"
 
     success_msg "Home directory configuration fetched."
     log "Fetch from home directory completed successfully"
