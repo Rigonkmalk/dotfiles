@@ -1,1 +1,9 @@
 yarr/
+/conf.d/teleport.fish
+/functions/myInstances.fish
+/functions/myOnDemandInstances.fish
+/functions/startMyOnDemandInstances.fish
+/functions/stopMyOnDemandInstances.fish
+/functions/startInstances.fish
+/functions/ccInstances.fish
+/alacritty.toml.premacos.bak

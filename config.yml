@@ -1,0 +1,174 @@
+# lazygit config — https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+# lazygit 0.65.1 — toutes les touches custom ont été vérifiées comme libres
+# vis-à-vis des raccourcis par défaut (`lazygit -c`).
+
+gui:
+  # Layout
+  showFileTree: true
+  showRandomTip: false
+  showCommandLog: false # '@' pour l'ouvrir ponctuellement
+  showBottomLine: false
+  nerdFontsVersion: "3" # icônes fichiers/branches (nécessite une Nerd Font)
+  showNumstatInFilesView: true # +12 -3 à côté de chaque fichier
+  showDivergenceFromBaseBranch: arrowAndNumber
+  mainPanelSplitMode: flexible # vertical si la fenêtre est étroite
+  splitDiff: auto
+  language: en                   # pas de traduction fr dans lazygit 0.65.1
+                                 # (dispo : ja ko nl pl pt ru zh-CN zh-TW)
+  timeFormat: "02/01/2006"
+  shortTimeFormat: "15:04"
+  commitLength:
+    show: true
+  # Quality of life
+  skipDiscardChangeWarning: false
+  skipStashWarning: true
+  skipRewordInEditorWarning: true
+  filterMode: fuzzy
+  switchToFilesAfterStashPop: true
+  switchToFilesAfterStashApply: true
+  border: rounded
+  animateExplosion: false
+  theme:
+    activeBorderColor: ["#89b4fa", bold]
+    inactiveBorderColor: ["#6c7086"]
+    selectedLineBgColor: ["#313244"]
+    optionsTextColor: ["#89b4fa"]
+    cherryPickedCommitBgColor: ["#45475a"]
+    cherryPickedCommitFgColor: ["#89b4fa"]
+    unstagedChangesColor: ["#f38ba8"]
+    defaultFgColor: ["default"]
+git:
+  diffRenderers:
+    - colorArg: always
+      command: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+  commit:
+    signOff: false
+    autoWrapCommitMessage: true
+    autoWrapWidth: 72
+  merging:
+    manualCommit: false
+    args: ""
+  log:
+    order: topo-order
+    showGraph: always
+    showWholeGraph: false
+  autoFetch: true
+  autoRefresh: true
+  fetchAll: false # plus rapide sur les repos multi-remotes
+  parseEmoji: true
+  mainBranches: [master, main, develop]
+  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
+  allBranchesLogCmds:
+    - "git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium"
+  overrideGpg: false # laisse git gérer la signature ssh de tes commits
+os:
+  editPreset: "nvim" # remplace par vscode / zed / helix si besoin
+  openLink: "open {{link}}"
+refresher:
+  refreshInterval: 10
+  fetchInterval: 120
+update:
+  method: never # géré par brew
+promptToReturnFromSubprocess: false
+disableStartupPopups: true
+notARepository: "prompt"
+customCommands:
+  # ---------- global ----------
+  - key: "<c-p>"
+    context: "global"
+    description: "Push --force-with-lease"
+    command: "git push --force-with-lease"
+    loadingText: "force-push…"
+    output: log
+  - key: "<c-g>"
+    context: "global"
+    description: "Ouvrir / créer la PR GitHub dans le navigateur"
+    command: "gh pr view --web 2>/dev/null || gh pr create --web"
+    output: terminal
+  - key: "<c-y>"
+    context: "global"
+    description: "Checkout d'une PR GitHub (fzf)"
+    command: |
+      pr=$(gh pr list --limit 50 | fzf --prompt='PR > ' | awk '{print $1}') \
+        && [ -n "$pr" ] && gh pr checkout "$pr"
+    output: terminal
+  - key: "<c-k>"
+    context: "global"
+    description: "Suivre les checks CI de la PR courante"
+    command: "gh pr checks --watch; printf '\\nEntrée pour revenir…'; read _"
+    output: terminal
+  - key: "<c-w>"
+    context: "global"
+    description: "Nouveau worktree depuis une branche (fzf)"
+    command: |
+      br=$(git branch -a --format='%(refname:short)' | grep -v '^origin/HEAD' | fzf --prompt='branche > ') \
+        && [ -n "$br" ] && git worktree add "../$(basename "$PWD")-$(basename "$br")" "$br"
+    output: terminal
+  # ---------- files ----------
+  - key: "b"
+    context: "files"
+    description: "git absorb (crée les commits fixup)"
+    command: "git absorb"
+    loadingText: "absorb…"
+    output: log
+  - key: "B"
+    context: "files"
+    description: "git absorb + rebase autosquash"
+    command: "git absorb --and-rebase"
+    loadingText: "absorb + rebase…"
+    output: log
+  - key: "<c-s>"
+    context: "files"
+    description: "Stash avec message (inclut les untracked)"
+    prompts:
+      - type: "input"
+        title: "Message du stash"
+        key: "Msg"
+    command: "git stash push -u -m {{.Form.Msg | quote}}"
+    loadingText: "stash…"
+  # ---------- commits ----------
+  - key: "E"
+    context: "commits"
+    description: "Fixup ce commit avec les changements staged"
+    command: "git commit --fixup {{.SelectedLocalCommit.Hash}}"
+    loadingText: "fixup…"
+  - key: "X"
+    context: "commits"
+    description: "Rebase interactif autosquash depuis ce commit"
+    command: "GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash --autostash {{.SelectedLocalCommit.Hash}}^"
+    loadingText: "rebase autosquash…"
+    output: log
+  - key: "D"
+    context: "commits"
+    description: "Afficher le commit en plein écran (delta)"
+    command: "git show {{.SelectedLocalCommit.Hash}} | delta --dark --line-numbers --paging=always"
+    output: terminal
+  - key: "Y"
+    context: "commits"
+    description: "Copier le hash du commit dans le presse-papier"
+    command: "printf %s {{.SelectedLocalCommit.Hash}} | pbcopy"
+    loadingText: "copié"
+  # ---------- branches ----------
+  - key: "B"
+    context: "localBranches"
+    description: "Nouvelle branche depuis la branche par défaut à jour"
+    prompts:
+      - type: "input"
+        title: "Nom de la nouvelle branche"
+        key: "BranchName"
+    command: |
+      base=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|origin/||')
+      base=${base:-main}
+      git fetch origin "$base" && git switch -c {{.Form.BranchName | quote}} "origin/$base"
+    loadingText: "création de la branche…"
+    output: log
+  - key: "D"
+    context: "localBranches"
+    description: "Reset --hard sur origin/<branche courante>"
+    prompts:
+      - type: "confirm"
+        title: "Reset hard"
+        body: "Écraser la branche locale avec origin/{{.CheckedOutBranch.Name}} ? Les changements non commités seront perdus."
+    command: "git fetch origin {{.CheckedOutBranch.Name | quote}} && git reset --hard origin/{{.CheckedOutBranch.Name | quote}}"
+    loadingText: "reset…"
+    output: log
