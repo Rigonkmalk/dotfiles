@@ -1,6 +1,9 @@
 # lazygit config — https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
-# lazygit 0.65.1 — toutes les touches custom ont été vérifiées comme libres
-# vis-à-vis des raccourcis par défaut (`lazygit -c`).
+# lazygit 0.65.1 — touches vérifiées libres vs raccourcis par défaut (`lazygit -c`).
+# Modificateur ⌘ (meta) au lieu de Ctrl : évite les conflits avec zellij.
+# Nécessite le protocole clavier kitty — OK sur Alacritty 0.17 + zellij 0.45
+# (vérifié : ⌘ arrive bien comme CSI ...;9u jusqu'à lazygit, même dans zellij).
+# Lettres évitées car captées par Alacritty/macOS : c v n w q h m f b k + - 0
 
 gui:
   # Layout
@@ -74,30 +77,30 @@ disableStartupPopups: true
 notARepository: "prompt"
 customCommands:
   # ---------- global ----------
-  - key: "<c-p>"
+  - key: "<meta+p>"
     context: "global"
     description: "Push --force-with-lease"
     command: "git push --force-with-lease"
     loadingText: "force-push…"
     output: log
-  - key: "<c-g>"
+  - key: "<meta+g>"
     context: "global"
     description: "Ouvrir / créer la PR GitHub dans le navigateur"
     command: "gh pr view --web 2>/dev/null || gh pr create --web"
     output: terminal
-  - key: "<c-y>"
+  - key: "<meta+o>"
     context: "global"
     description: "Checkout d'une PR GitHub (fzf)"
     command: |
       pr=$(gh pr list --limit 50 | fzf --prompt='PR > ' | awk '{print $1}') \
         && [ -n "$pr" ] && gh pr checkout "$pr"
     output: terminal
-  - key: "<c-k>"
+  - key: "<meta+i>"
     context: "global"
     description: "Suivre les checks CI de la PR courante"
     command: "gh pr checks --watch; printf '\\nEntrée pour revenir…'; read _"
     output: terminal
-  - key: "<c-w>"
+  - key: "<meta+t>"
     context: "global"
     description: "Nouveau worktree depuis une branche (fzf)"
     command: |
@@ -117,7 +120,7 @@ customCommands:
     command: "git absorb --and-rebase"
     loadingText: "absorb + rebase…"
     output: log
-  - key: "<c-s>"
+  - key: "<meta+s>"
     context: "files"
     description: "Stash avec message (inclut les untracked)"
     prompts:
